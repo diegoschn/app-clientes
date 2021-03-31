@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { Cliente } from '../cliente';
 
@@ -7,13 +7,16 @@ import { Cliente } from '../cliente';
   templateUrl: './clientes-form.component.html',
   styleUrls: ['./clientes-form.component.css']
 })
-export class ClientesFormComponent implements OnInit {
+export class ClientesFormComponent {
 
   cliente : Cliente;
 
-  constructor() { }
+  constructor() { 
+    this.cliente = new Cliente;
+  }
 
-  ngOnInit(): void {
+  onSubmit(){
+    console.log(this.cliente)
   }
 
 }
