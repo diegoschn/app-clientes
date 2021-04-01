@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ClientesService } from 'src/app/clientes.service';
 
 import { Cliente } from '../cliente';
 
@@ -11,8 +12,9 @@ export class ClientesFormComponent {
 
   cliente : Cliente;
 
-  constructor() { 
+  constructor(private service : ClientesService) { 
     this.cliente = new Cliente;
+    this.cliente = service.getCliente();
   }
 
   onSubmit(){
