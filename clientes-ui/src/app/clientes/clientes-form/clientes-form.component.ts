@@ -25,8 +25,12 @@ export class ClientesFormComponent {
     //Usado quando a requisição for assíncrona
     .subscribe(response => {
       console.log(response)
+      //pega todos os dados de response e joga no template
+      this.cliente = response;
       this.success = true
+      this.errors = null;
     },errorResponse => {
+      this.success = false;
       this.errors = errorResponse.error.errors;
     }
     );
