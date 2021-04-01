@@ -11,14 +11,25 @@ import { Cliente } from '../cliente';
 export class ClientesFormComponent {
 
   cliente : Cliente;
+  success : boolean = false;
+  errors : string[]; 
 
   constructor(private service : ClientesService) { 
     this.cliente = new Cliente;
-    this.cliente = service.getCliente();
   }
 
   onSubmit(){
-    console.log(this.cliente)
+    this.service
+    //Como esse método irá retornar um Observable
+    .create(this.cliente)
+    //Usado quando a requisição for assíncrona
+    .subscribe(response => {
+      console.log(response)
+      this.success = true
+    },errorResponse => {
+      this.errors = errorResponse.error.errors;
+    }
+    );
   }
 
 }
