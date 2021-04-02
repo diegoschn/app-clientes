@@ -33,7 +33,7 @@ public class ClienteResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> buscar(@PathVariable Integer id){
+    public ResponseEntity<Cliente> find(@PathVariable Integer id){
         Optional<Cliente> clienteEncontrado = clientesRepository.findById(id);
         if(clienteEncontrado.isPresent()){
             return ResponseEntity.ok(clienteEncontrado.get());
@@ -51,8 +51,8 @@ public class ClienteResource {
     @PutMapping("/{id}")
     public ResponseEntity<Cliente> update(@PathVariable Integer id, @RequestBody
             Cliente cliente) {
-        Optional<Cliente> cozinhaEncontrada = clientesRepository.findById(id);
-        if (cozinhaEncontrada.isPresent()) {
+        Optional<Cliente> clienteEncontrado = clientesRepository.findById(id);
+        if (clienteEncontrado.isPresent()) {
             cliente.setId(id);
             Cliente clienteOk = clienteService.salvar(cliente);
             return ResponseEntity.ok(clienteOk);
@@ -63,7 +63,7 @@ public class ClienteResource {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletar(@PathVariable Integer id) {
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
         try {
             clienteService.excluir(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

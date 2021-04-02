@@ -1,6 +1,6 @@
 <h1 class="mt-4">Clientes</h1>
 <ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item active">Cadastro</li>
+    <li class="breadcrumb-item active">{{ cliente.id ? 'Edição' : 'Cadastro' }}</li>
 </ol>
 
 <div class="container">
@@ -12,7 +12,7 @@
                     Cliente salvo/atualizado com sucesso!
                 </div>
                 <div class="alert alert-danger" role="alert" *ngFor="let error of errors">
-                    {{  error}}
+                    {{ error }}
                 </div>
             </div>
         </div>
@@ -47,8 +47,12 @@
         </div>
         <div class="row">
             <div class="col-md-3">
-                <button class="btn btn-success" type="submit">
+                <button class="btn btn-success" type="submit" *ngIf="!cliente.id">
                     <i class="fa fa-save"></i> Cadastrar
+                </button>
+
+                <button class="btn btn-primary" type="submit" *ngIf="cliente.id">
+                    <i class="fa fa-retweet"></i> Atualizar
                 </button>
                 <button class="btn btn-warning ml-1" type="button" (click)="voltar()">
                     <i class="fa fa-arrow-alt-circle-left"></i> Voltar

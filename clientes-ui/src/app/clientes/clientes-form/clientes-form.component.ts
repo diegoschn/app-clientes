@@ -26,34 +26,49 @@ export class ClientesFormComponent implements OnInit {
   }
 
   ngOnInit(){
-    let params = this.activatedRoute.params;
-    if(params && params.value && params.value.id){
-      this.id = params.value.id;
-      this.service
-      .getClienteById(this.id)
-      .subscribe(
-        response => this.cliente = response,
-        errorResponse => this.cliente = new Cliente
-      )
-    }
+    let params = this.activatedRoute.params
+      .subscribe( params => {
+        if(params && params['id']){
+          this.service
+          .getClienteById(params.id)
+          .subscribe( response => {
+            this.cliente = response,
+            errorResponse => this.cliente = new Cliente;
+          })
+        }
+      })
+    
   }
   
   onSubmit(){
-    this.service
-    //Como esse método irá retornar um Observable
-    .create(this.cliente)
-    //Usado quando a requisição for assíncrona
-    .subscribe(response => {
-      console.log(response)
-      //pega todos os dados de response e joga no template
-      this.cliente = response;
-      this.success = true
-      this.errors = null;
-    },errorResponse => {
-      this.success = false;
-      this.errors = errorResponse.error.errors;
-    }
-    );
+    if(this.id){
+        this.service
+        .update(this.cliente)
+        .subscribe( response => {
+          this.success = true;
+          this.errors = null;
+        }, errorResponse => {
+          this.errors = ['Erro ao atualizar o cliente.']
+        })
+    } else{
+      this.service
+      //Como esse método irá retornar um Observable
+      .create(this.cliente)
+      //Usado quando a requisição for assíncrona
+      .subscribe(response => {
+        console.log(response)
+        //pega todos os dados de response e joga no template
+        this.cliente = response;
+        this.success = true
+        this.errors = null;
+      },errorResponse => {
+        this.success = false;
+        this.errors = errorResponse.error.errors;
+      }
+    );  
+  } 
+    
+    
   }
   voltar(){
     this.router.navigate(['/clientes-lista'])
