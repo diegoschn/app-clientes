@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+//ActivatedRoute - Serve para capturar parâmetros 
+
+import { Component, OnInit } from '@angular/core';
 import { ClientesService } from 'src/app/clientes.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Cliente } from '../cliente';
 
@@ -9,16 +11,33 @@ import { Cliente } from '../cliente';
   templateUrl: './clientes-form.component.html',
   styleUrls: ['./clientes-form.component.css']
 })
-export class ClientesFormComponent {
+export class ClientesFormComponent implements OnInit {
 
   cliente : Cliente;
   success : boolean = false;
   errors : string[]; 
+  id : number;
 
-  constructor(private service : ClientesService, private router : Router) { 
+  constructor(private service : ClientesService, 
+    private router : Router,
+    private activatedRoute : ActivatedRoute) { 
+
     this.cliente = new Cliente;
   }
 
+  ngOnInit(){
+    let params = this.activatedRoute.params;
+    if(params && params.value && params.value.id){
+      this.id = params.value.id;
+      this.service
+      .getClienteById(this.id)
+      .subscribe(
+        response => this.cliente = response,
+        errorResponse => this.cliente = new Cliente
+      )
+    }
+  }
+  
   onSubmit(){
     this.service
     //Como esse método irá retornar um Observable
@@ -39,5 +58,7 @@ export class ClientesFormComponent {
   voltar(){
     this.router.navigate(['/clientes-lista'])
   }
+
+
 
 }
